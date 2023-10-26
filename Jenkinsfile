@@ -68,4 +68,12 @@ pipeline {
             }
         }
     }
+     post {
+        success {
+            echo 'Build and deployed successfully!'
+        }
+        failure {
+            echo 'Failed!'
+        }
+    }
 }
