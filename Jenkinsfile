@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     // Navigate to the .NET project directory
-                    dir('C:\Users\tripti.nayak\Downloads\MedEcommerce_API-master\MedEcommerce_API-master\MedEcommerce_API') {
+                    dir('C:\\Users\\tripti.nayak\\Downloads\\MedEcommerce_API-master\\MedEcommerce_API-master\\MedEcommerce_API') {
                         // Build the .NET project using 'dotnet build'
                         bat "dotnet build --configuration ${env.BUILD_CONFIGURATION}"
                     }
@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     // Navigate to the client app directory
-                    dir('C:\Users\tripti.nayak\Downloads\ABC_Healthcare_Frontend') {
+                    dir('C:\\Users\\tripti.nayak\\Downloads\\ABC_Healthcare_Frontend') {
                         // Install dependencies using 'npm'
                         bat 'npm install'
                         
