@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     // Navigate to your React app directory
-                    dir('C:\\path\\to\\your\\react-app') {
+                    dir('C:\\Users\\tripti.nayak\\Downloads\\ABC_Healthcare_Frontend') {
                         // Install dependencies and build the React app using npm
                         bat "npm install"
                         bat "npm run build"
