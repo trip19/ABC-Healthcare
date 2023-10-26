@@ -50,23 +50,13 @@ pipeline {
             }
         }
 
-        stage('Checkout Tests') {
-            steps {
-                script {
-                    // Checkout the tests branch
-                    checkout([$class: 'GitSCM', branches: [[name: "*/${TESTS_BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], userRemoteConfigs: [[url: 'https://github.com/trip19/ABC-Healthcare.git']]])
-                }
-            }
+    }
+    post {
+        success {
+            echo 'Build and deployed successfully!'
         }
-
-        stage('Run Tests') {
-            steps {
-                script {
-                    // Run your xUnit tests
-                    bat 'dotnet test' // Adjust this based on your project structure and test commands
-                }
-            }
+        failure {
+            echo 'Failed!'
         }
     }
-    
 }
