@@ -29,7 +29,26 @@ pipeline {
             }
         }
 
-       
+       stage('Checkout Client App') {
+            steps {
+                script {
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${CLIENTAPP_BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], userRemoteConfigs: [[url: 'https://github.com/trip19/ABC-Healthcare.git']])
+                }
+            }
+        }
+
+        stage('Build React App') {
+            steps {
+                script {
+                    // Navigate to your React app directory
+                    dir('C:\\path\\to\\your\\react-app') {
+                        // Install dependencies and build the React app using npm
+                        bat "npm install"
+                        bat "npm run build"
+                    }
+                }
+            }
+        }
 
         stage('Checkout Tests') {
             steps {
