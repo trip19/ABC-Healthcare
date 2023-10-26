@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MedEcommerce_DB;
+using MedEcommerce_Core;
 
 namespace MedEcommerce_API.Controllers
 {
@@ -13,40 +14,33 @@ namespace MedEcommerce_API.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IOrderService _orderService;
 
-        public OrdersController(ApplicationDbContext context)
+        public OrdersController(IOrderService orderService)
         {
-            _context = context;
+            _orderService = orderService;
         }
 
         // GET: api/Orders
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-          if (_context.Orders == null)
-          {
-              return NotFound();
-          }
-            return await _context.Orders.Include(u => u.User).Include(od => od.Details).ThenInclude(m => m.Medicine).ToListAsync();
+            var orders = await _orderService.GetOrdersAsync();
+            return Ok(orders);
         }
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrder(int id)
         {
-          if (_context.Orders == null)
-          {
-              return NotFound();
-          }
-            var order = await _context.Orders.Include(u => u.User).Include(od=>od.Details).ThenInclude(m=>m.Medicine).Where(u=>u.UserId==id).ToListAsync();
+            var orders = await _orderService.GetOrdersByUserIdAsync(id);
 
-            if (order == null)
+            if (orders == null || orders.Count() == 0)
             {
                 return NotFound();
             }
 
-            return order;
+            return Ok(orders);
         }
 
         // PUT: api/Orders/5
@@ -59,30 +53,17 @@ namespace MedEcommerce_API.Controllers
                 return BadRequest();
             }
 
-            var eo = _context.Orders.Include(u => u.User).Include(od => od.Details).ThenInclude(m => m.Medicine).Where(u => u.Id == id).FirstOrDefault();
-            if (eo == null)
+            var existingOrder = await _orderService.GetOrderByIdAsync(id);
+
+            if (existingOrder == null)
             {
-                return NotFound(eo);
-            }
-            
-            eo.Status = order.Status;
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
-            return eo;
+            existingOrder.Status = order.Status;
+            var updatedOrder = await _orderService.UpdateOrderAsync(existingOrder);
+
+            return updatedOrder;
         }
 
         // POST: api/Orders
@@ -90,47 +71,44 @@ namespace MedEcommerce_API.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
-          if (_context.Orders == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Orders'  is null.");
-          }
-          var cartItems = _context.Carts.Where(c=>c.UserId == order.UserId).ToList();
-            foreach(var ci in cartItems)
+            if (_orderService == null)
             {
-                OrderDetails details= new OrderDetails();
-                details.MedId = ci.MedId;
-                details.Quantity = ci.Quantity;
+                return Problem("Order service is null.");
+            }
+
+            var cartItems = await _orderService.GetCartItemsByUserIdAsync(order.UserId);
+
+            foreach (var cartItem in cartItems)
+            {
+                OrderDetails details = new OrderDetails
+                {
+                    MedId = cartItem.MedId,
+                    Quantity = cartItem.Quantity
+                };
+
                 order.Details.Add(details);
             }
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrder", new { id = order.Id }, order);
+            var createdOrder = await _orderService.CreateOrderAsync(order);
+
+            return CreatedAtAction("GetOrder", new { id = createdOrder.Id }, createdOrder);
         }
 
         // DELETE: api/Orders/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
-            if (_context.Orders == null)
-            {
-                return NotFound();
-            }
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _orderService.GetOrderByIdAsync(id);
+
             if (order == null)
             {
                 return NotFound();
             }
 
-            _context.Orders.Remove(order);
-            await _context.SaveChangesAsync();
+            await _orderService.DeleteOrderAsync(id);
 
             return NoContent();
         }
 
-        private bool OrderExists(int id)
-        {
-            return (_context.Orders?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
     }
 }

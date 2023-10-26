@@ -24,22 +24,22 @@ namespace MedEcommerce_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Medicine>>> GetMedicines()
         {
-          if (_context.Medicines == null)
-          {
-              return NotFound();
-          }
-            return await _context.Medicines.Include(c=>c.Category).ToListAsync();
+            if (_context.Medicines == null)
+            {
+                return NotFound();
+            }
+            return await _context.Medicines.Include(c => c.Category).ToListAsync();
         }
 
         // GET: api/Medicines/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Medicine>> GetMedicine(int id)
         {
-          if (_context.Medicines == null)
-          {
-              return NotFound();
-          }
-            var medicine = await _context.Medicines.Include(c => c.Category).Where(m=>m.Id==id).FirstOrDefaultAsync();
+            if (_context.Medicines == null)
+            {
+                return NotFound();
+            }
+            var medicine = await _context.Medicines.Include(c => c.Category).Where(m => m.Id == id).FirstOrDefaultAsync();
 
             if (medicine == null)
             {
@@ -91,10 +91,10 @@ namespace MedEcommerce_API.Controllers
         [HttpPost]
         public async Task<ActionResult<Medicine>> PostMedicine(Medicine medicine)
         {
-          if (_context.Medicines == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Medicines'  is null.");
-          }
+            if (_context.Medicines == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Medicines'  is null.");
+            }
             _context.Medicines.Add(medicine);
             await _context.SaveChangesAsync();
             var med = await _context.Medicines.Include(c => c.Category).Where(m => m.Name == medicine.Name).FirstOrDefaultAsync();
