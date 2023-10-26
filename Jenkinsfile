@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     // Checkout the ASP.NET web app branch
-                    checkout([$class: 'GitSCM', branches: [[name: "*/${ASPNET_BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], userRemoteConfigs: [[url: 'https://github.com/your/repo.git']]])
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${ASPNET_BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], userRemoteConfigs: [[url: 'https://github.com/trip19/ABC-Healthcare.git']]])
                 }
             }
         }
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     // Checkout the client app branch
-                    checkout([$class: 'GitSCM', branches: [[name: "*/${CLIENTAPP_BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], userRemoteConfigs: [[url: 'https://github.com/your/repo.git']]])
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${CLIENTAPP_BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], userRemoteConfigs: [[url: 'https://github.com/trip19/ABC-Healthcare.git']]])
                 }
             }
         }
@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     // Checkout the tests branch
-                    checkout([$class: 'GitSCM', branches: [[name: "*/${TESTS_BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], userRemoteConfigs: [[url: 'https://github.com/your/repo.git']]])
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${TESTS_BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], userRemoteConfigs: [[url: 'https://github.com/trip19/ABC-Healthcare.git']]])
                 }
             }
         }
