@@ -29,29 +29,7 @@ pipeline {
             }
         }
 
-        stage('Checkout Client App') {
-            steps {
-                script {
-                    // Checkout the client app branch
-                    checkout([$class: 'GitSCM', branches: [[name: "*/${CLIENTAPP_BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], userRemoteConfigs: [[url: 'https://github.com/trip19/ABC-Healthcare.git']]])
-                }
-            }
-        }
-
-        stage('Build Client App') {
-            steps {
-                script {
-                    // Navigate to the client app directory
-                    dir('C:\\Users\\tripti.nayak\\Downloads\\ABC_Healthcare_Frontend') {
-                        // Install dependencies using 'npm'
-                        bat 'npm install'
-                        
-                        // Build the client app using 'npm'
-                        bat 'npm run build'
-                    }
-                }
-            }
-        }
+       
 
         stage('Checkout Tests') {
             steps {
