@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
-using MedEcommerce_API.Controllers;
-using MedEcommerce_Core;
-using MedEcommerce_DB;
+using ABCHealthcare_API.Controllers;
+using ABCHealthcare_Core;
+using ABCHealthcare_DB;
 
 namespace ABC_Healthcare_Tests
 {

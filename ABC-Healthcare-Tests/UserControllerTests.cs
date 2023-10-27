@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MedEcommerce_API.Controllers;
-using MedEcommerce_DB;
-using MedEcommerce_Core;
+using ABCHealthcare_API.Controllers;
+using ABCHealthcare_Core;
 using Moq;
 using Xunit;
 using Microsoft.AspNetCore.Mvc;
+using ABCHealthcare_DB;
 
 namespace ABC_Healthcare_Tests
 {

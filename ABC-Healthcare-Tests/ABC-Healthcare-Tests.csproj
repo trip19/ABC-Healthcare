@@ -42,9 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MedEcommerce_API\MedEcommerce_API.csproj" />
-    <ProjectReference Include="..\MedEcommerce_Core\MedEcommerce_Core.csproj" />
-    <ProjectReference Include="..\MedEcommerce_DB\MedEcommerce_DB.csproj" />
+    <ProjectReference Include="..\MedEcommerce_API\ABCHealthcare_API.csproj" />
+    <ProjectReference Include="..\MedEcommerce_Core\ABCHealthcare_Core.csproj" />
+    <ProjectReference Include="..\MedEcommerce_DB\ABCHealthcare_DB.csproj" />
   </ItemGroup>
 
 </Project>
